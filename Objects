@@ -1,0 +1,81 @@
+//Objects Project: The Tap
+
+//variables
+final color BLU=color(46,95,255);
+final color GRN=color(63,255,95);
+int dw=50;
+int dh=50;
+PImage faucet;
+PImage d;
+boolean on=true;
+
+//class declaration
+class Leak{
+  float x=600;
+  float y=420;
+  float speed=10;
+  Leak(){
+    x=600;
+    y=420;
+    speed=10;
+  }
+  void move(){
+    y=y+speed;
+    if(y>height){
+      y=420;
+      x=600;;
+    }
+  }
+  void display(){
+    imageMode(CENTER);
+    image(d,x,y,30,50);
+  }
+}
+Leak[]drops=new Leak[1];
+
+//basic setup
+void setup(){
+  size(1000,700);
+  faucet=loadImage("faucet.png");
+  d=loadImage("droplet.png");
+  for(int i=0;i<drops.length;i++){
+    drops[i]=new Leak();
+  }
+}
+
+void draw(){
+  //gradient background
+  noStroke();
+  for(int x=0;x<width;x+=dw){
+    for(int y=0;y<height;y+=dh){
+      int loc=x+y*width;
+      float ratio=float(loc)/(width*height);
+      color c=lerpColor(BLU,GRN,ratio);
+      fill(c);
+      rect(x,y,dw,dh);
+
+    }
+  }
+  imageMode(CORNER);
+  image(faucet,500,100,500,700);
+  //if(on==true){
+   // leak.display;
+ // }
+ if(on==true){
+  for(int i=0;i<drops.length;i++){
+    drops[i].display();
+    drops[i].move();
+  }
+}
+//text
+fill(0);
+textSize(20);
+text("To stop the leak, press and hold the mouse. To help contribute to the drought, release the mouse!",20,80);
+}
+
+void mousePressed(){
+  on=false;
+}
+void mouseReleased(){
+  on=true;
+}
